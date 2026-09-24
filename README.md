@@ -46,7 +46,6 @@ Python 3.8+ required.
 pip install matplotlib   # only needed for the chart window
 ```
 ## Run
-
 ```bash
 python btcmain.py live
 ```
