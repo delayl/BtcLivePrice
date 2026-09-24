@@ -2,6 +2,24 @@
 
 Pulls BTC/USD price from 17 free public APIs in parallel, filters out delayed data, and shows the consensus price in your terminal.
 
+
+## Using it as a library
+
+You can import this into your own code to get live BTC price data without running the full CLI.
+
+python
+from btcmain import get_btc_price
+
+results, agg = get_btc_price()
+
+if agg:
+    print(agg["best_price"])       # float, e.g. 84139.01
+    print(agg["num_agreeing"])     # int, how many sources agreed
+    print(agg["num_sources"])      # int, how many responded
+    print(agg["spread"])           # float, hi - lo across exchanges
+    print(agg["freshest"]["name"]) # str, e.g. "Binance"
+    print(agg["freshest"]["age"])  # float, seconds old
+
 ## Features
 
 - 17 sources, no API keys needed
@@ -25,3 +43,5 @@ Python 3.8+ required.
 
 ```bash
 pip install matplotlib   # only needed for the chart window
+
+python btcmain.py live
