@@ -1,7 +1,3 @@
-"""
-BTC Live Price — Multi-source, delay-checked aggregator.
-"""
-
 import json
 import sys
 import time
@@ -12,13 +8,10 @@ from urllib.request import Request, urlopen
 from urllib.error import URLError, HTTPError
 from datetime import datetime, timezone
 
-# ---------------------------------------------------------------------------
-# COLORS (ANSI)
-# ---------------------------------------------------------------------------
 class C:
     RESET   = "\033[0m"
-    LBLUE   = "\033[94m"       # light blue
-    LBLUE_B = "\033[1;94m"     # bold light blue
+    LBLUE   = "\033[94m"       
+    LBLUE_B = "\033[1;94m"     
     GREEN   = "\033[92m"
     RED     = "\033[91m"
     YELLOW  = "\033[93m"
@@ -38,9 +31,6 @@ def enable_ansi():
 
 enable_ansi()
 
-# ---------------------------------------------------------------------------
-# CONFIG
-# ---------------------------------------------------------------------------
 REQUEST_TIMEOUT = 4
 MAX_AGE_SECONDS = 30
 CROSS_VALIDATE_TOLERANCE = 0.01
@@ -55,9 +45,7 @@ SOURCE_MIN_INTERVAL = {
     "Gemini":      2.0,
 }
 
-# ---------------------------------------------------------------------------
-# RUNTIME STATE
-# ---------------------------------------------------------------------------
+
 _last_fetch = {}
 _cached = {}
 _backoff = {}
@@ -65,11 +53,7 @@ _backoff = {}
 
 def mark_rate_limited(name, seconds=60):
     _backoff[name] = time.time() + seconds + random.uniform(0, 5)
-
-
-# ---------------------------------------------------------------------------
-# HTTP helper
-# ---------------------------------------------------------------------------
+    
 def http_get_json(url, timeout=REQUEST_TIMEOUT):
     req = Request(url, headers={"User-Agent": USER_AGENT,
                                 "Accept": "application/json"})
@@ -77,10 +61,6 @@ def http_get_json(url, timeout=REQUEST_TIMEOUT):
         raw = resp.read()
     return json.loads(raw)
 
-
-# ---------------------------------------------------------------------------
-# Sources
-# ---------------------------------------------------------------------------
 def fetch_binance():
     d = http_get_json("https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT")
     return {"price": float(d["price"]), "ts": time.time(), "raw": d}
@@ -187,9 +167,6 @@ SOURCES = {
 }
 
 
-# ---------------------------------------------------------------------------
-# Parallel fetch
-# ---------------------------------------------------------------------------
 def fetch_all(timeout=REQUEST_TIMEOUT + 2):
     results = {}
     now = time.time()
@@ -250,9 +227,6 @@ def fetch_all(timeout=REQUEST_TIMEOUT + 2):
     return results
 
 
-# ---------------------------------------------------------------------------
-# Aggregation
-# ---------------------------------------------------------------------------
 def aggregate(results):
     now = time.time()
     valid = []
@@ -298,9 +272,6 @@ def aggregate(results):
     }
 
 
-# ---------------------------------------------------------------------------
-# Output
-# ---------------------------------------------------------------------------
 def fmt_price(p):
     return f"${p:,.2f}"
 
@@ -364,9 +335,6 @@ def print_report(results, agg):
     print()
 
 
-# ---------------------------------------------------------------------------
-# Public API
-# ---------------------------------------------------------------------------
 def get_btc_price():
     results = fetch_all()
     agg = aggregate(results)
@@ -411,9 +379,6 @@ def run_continuous(interval=1.0, show_table_every=30.0):
         print("\n\n" + C.GRAY + "  Stopped." + C.RESET)
 
 
-# ---------------------------------------------------------------------------
-# Entry point
-# ---------------------------------------------------------------------------
 if __name__ == "__main__":
     mode = sys.argv[1] if len(sys.argv) > 1 else "once"
 
