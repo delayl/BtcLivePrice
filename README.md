@@ -7,7 +7,7 @@ Pulls BTC/USD price from 17 free public APIs in parallel, filters out delayed da
 
 You can import this into your own code to get live BTC price data without running the full CLI.
 
-python
+```python
 from btcmain import get_btc_price
 
 results, agg = get_btc_price()
@@ -19,6 +19,7 @@ if agg:
     print(agg["spread"])           # float, hi - lo across exchanges
     print(agg["freshest"]["name"]) # str, e.g. "Binance"
     print(agg["freshest"]["age"])  # float, seconds old
+```
 
 ## Features
 
@@ -43,5 +44,7 @@ Python 3.8+ required.
 
 ```bash
 pip install matplotlib   # only needed for the chart window
+```
 
-python btcmain.py live
+## Run
+```python btcmain.py live```
