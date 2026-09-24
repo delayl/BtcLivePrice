@@ -1,0 +1,28 @@
+{
+  "discord": {
+    "enabled": true,
+    "webhook_url": "",
+    "username": "BTC Price",
+    "avatar_url": "",
+    "notify_on_start": true,
+    "notify_on_stop": true,
+    "alerts": {
+      "price_move_pct": 0.5,
+      "volatility_spike": 2.0,
+      "spread_wide_usd": 50.0,
+      "sources_disagree_min": 5,
+      "cooldown_seconds": 60
+    }
+  },
+  "chart": {
+    "enabled": true,
+    "window_seconds": 120,
+    "update_every_seconds": 2,
+    "show_aggression": true,
+    "show_volatility": true
+  },
+  "volatility": {
+    "window_seconds": 300,
+    "print_every_seconds": 5
+  }
+}
